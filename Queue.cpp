@@ -6,7 +6,7 @@ class Queue{
         T data{};
         Node * next{};
 
-        Node(T data, Node * next = nullptr ) : data{data}, next { next }{
+        Node(const T & data, Node * next = nullptr ) : data{data}, next { next }{
 
         }
     };
