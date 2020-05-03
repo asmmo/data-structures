@@ -1,12 +1,13 @@
 #include <iostream>
 
+#include <iostream>
+
 template<typename T>
 class Stack{
     struct Node{
-        Node * next{};
         T data{};
-
-        Node(T data, Node * next = nullptr ) : data{data}, next { next }{
+        Node * next{};
+        Node(const T & data, Node * next = nullptr ) : data{data}, next { next }{
 
         }
     };
@@ -17,7 +18,7 @@ class Stack{
 public:
     Stack() = default;
     Stack(const Stack & rhs) = delete ;
-    void push_front(T data ){
+    void push(T data ){
         head = new Node { data, head};
         ++_size;
     }
@@ -31,8 +32,11 @@ public:
         }
     }
 
-    T top(){
+    T& top(){
         return head -> data;
+    }
+    size_t size(){
+        return _size;
     }
 
     ~Stack(){
@@ -40,3 +44,18 @@ public:
     }
 
 };
+
+int main() {
+    Stack<int> s;
+    s.push(8);
+    s.push(3);
+    s.push(2);
+    s.top() = 9;
+    std::cout << s.top() << "\n";
+    s.pop();
+    std::cout << s.top() << "\n";
+    s.pop();
+    std::cout << s.top() << "\n";
+    s.pop();
+    std::cout << s.size() << "\n";
+}
