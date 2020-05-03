@@ -3,8 +3,8 @@
 template<typename T>
 class Queue{
     struct Node{
-        Node * next{};
         T data{};
+        Node * next{};
 
         Node(T data, Node * next = nullptr ) : data{data}, next { next }{
 
@@ -12,19 +12,19 @@ class Queue{
     };
 
     Node * head {};
+    Node* queueEnd{};
     size_t _size{};
 
 public:
     Queue() = default;
     Queue(const Queue & rhs) = delete ;
     void enqueue(const T & data ){
-        if(!head) head = new Node { data };
-        else{
-            Node * ptr = head;
-            while( ptr -> next ) ptr = ptr -> next;
-            ptr -> next = new Node { data };
-
+        if(!head){
+            head = new Node { data };
+            queueEnd = head;
         }
+        else
+            queueEnd = queueEnd -> next = new Node { data };
         ++_size;
     }
 
@@ -37,7 +37,7 @@ public:
         }
     }
 
-    T top(){
+    T& top(){
         return head -> data;
     }
 
@@ -56,6 +56,7 @@ int main() {
     q.enqueue(8);
     q.enqueue(3);
     q.enqueue(2);
+    q.top() = 9;
     std::cout << q.top() << "\n";
     q.dequeue();
     std::cout << q.top() << "\n";
