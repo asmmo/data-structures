@@ -15,6 +15,7 @@ class Stack{
     size_t _size{};
 
 public:
+    Stack() = default;
     Stack(const Stack & rhs) = delete ;
     void push_front(T data ){
         head = new Node { data, head};
