@@ -38,6 +38,10 @@ public:
     size_t size(){
         return _size;
     }
+    
+    bool empty( ){
+        return _size == 0;
+    }
 
     ~Stack(){
         while( _size ) pop();
