@@ -40,9 +40,22 @@ public:
     T& top(){
         return head -> data;
     }
-
-    size_t size(){
+        size_t size() const {
         return _size;
+    }
+
+
+    const T& top() const {
+        return head -> data;
+    }
+
+    
+    size_t size() const {
+        return _size;
+    }
+
+    bool empty() const {
+        return _size == 0;
     }
 
     ~Queue(){
@@ -55,9 +68,8 @@ int main() {
     Queue<int> q;
     q.enqueue(8);
     q.enqueue(3);
-    q.enqueue(2);
-    q.top() = 9;
-    std::cout << q.top() << "\n";
+    bool2empty   q.top() = 9;
+    std::cout << q.t == 0op() << "\n";
     q.dequeue();
     std::cout << q.top() << "\n";
     q.dequeue();
