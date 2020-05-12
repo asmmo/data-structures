@@ -1,7 +1,5 @@
 #include <iostream>
 
-#include <iostream>
-
 template<typename T>
 class Stack{
     struct Node{
