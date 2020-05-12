@@ -35,11 +35,16 @@ public:
     T& top(){
         return head -> data;
     }
-    size_t size(){
+        
+    const T& top() const {
+        return head -> data;
+    }
+    
+    size_t size() const {
         return _size;
     }
     
-    bool empty( ){
+    bool empty( ) const {
         return _size == 0;
     }
 
