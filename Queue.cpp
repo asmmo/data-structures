@@ -40,11 +40,7 @@ public:
     T& top(){
         return head -> data;
     }
-        size_t size() const {
-        return _size;
-    }
-
-
+    
     const T& top() const {
         return head -> data;
     }
