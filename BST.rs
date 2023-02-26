@@ -61,21 +61,15 @@ impl<K: Ord + Debug + Default, T: Debug + Default> BST<K, T> {
                     r_child: BST::Empty,
                 })))
             }
-            BST::Full(node) => match key.cmp(&node.as_ref().borrow().key) {
-                Ordering::Less => node.as_ref().borrow_mut().l_child.insert(key, value),
-                Ordering::Equal => node.as_ref().borrow_mut().r_child.insert(key, value),
-                Ordering::Greater => node.as_ref().borrow_mut().value = value,
-            },
-        }
-    }
 
-    fn is_leaf(&self) -> bool {
-        match self {
             BST::Full(node) => {
-                node.as_ref().borrow().l_child.is_empty()
-                    && node.as_ref().borrow().r_child.is_empty()
+                let ord = key.cmp(&node.as_ref().borrow().key);
+                match ord {
+                    Ordering::Less => node.as_ref().borrow_mut().l_child.insert(key, value),
+                    Ordering::Equal => node.as_ref().borrow_mut().r_child.insert(key, value),
+                    Ordering::Greater => node.as_ref().borrow_mut().value = value,
+                }
             }
-            BST::Empty => true,
         }
     }
 
@@ -190,12 +184,6 @@ impl<K: Ord + Debug + Default, T: Debug + Default> Clone for BST<K, T> {
 }
 #[test]
 fn test() {
-    let bt = std::collections::BTreeMap::<i32, String>::new();
-    // bt.get_mut(key)
-    let size = 10000;
-    use rand::{distributions::Uniform, Rng};
-    let range = Uniform::from(0..20);
-    let mut values: Vec<i32> = rand::thread_rng().sample_iter(&range).take(size).collect();
     let mut bst = BST::<i32, String>::new();
     println!("bst.min(): {:?}", bst.min());
     println!("bst.max(): {:?}", bst.max());
@@ -220,8 +208,4 @@ fn test() {
     println!("BST Before remove 1: {:?}", bst);
     bst.remove(1);
     println!("BST After remove 1: {:?}", bst);
-    // let mut to_be_sorted = values.clone();
-    // quick_sort(&mut to_be_sorted);
-    // values.sort();
-    // assert_eq!(values, to_be_sorted);
 }
