@@ -1,12 +1,11 @@
-use std::cmp::Ordering;
 use std::{
     borrow::{Borrow, BorrowMut},
     cell::RefCell,
+    cmp::Ordering,
     default::Default,
     fmt::Debug,
     rc::Rc,
 };
-fn main() {}
 #[derive(Default)]
 enum BST<K: Ord + Debug + Default, T: Debug + Default> {
     #[default]
