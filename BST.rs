@@ -51,6 +51,13 @@ impl<K: Ord + Debug + Default, T: Debug + Default> BST<K, T> {
         Self::Empty
     }
 
+    fn shallow_clone(&self) -> Self {
+        match self {
+            BST::Empty => BST::Empty,
+            BST::Full(node) => BST::Full(node.clone()),
+        }
+    }
+
     fn insert(&mut self, key: K, value: T) {
         match self {
             BST::Empty => {
@@ -141,11 +148,11 @@ impl<K: Ord + Debug + Default, T: Debug + Default> BST<K, T> {
                     if node.as_ref().borrow().is_leaf() {
                         res_bst = std::mem::replace(self, BST::Empty);
                     } else if node.as_ref().borrow().l_child.is_empty() {
-                        let mut r_child = node.as_ref().borrow().r_child.clone();
+                        let mut r_child = node.as_ref().borrow().r_child.shallow_clone();
                         std::mem::swap(self, &mut r_child);
                         res_bst = r_child;
                     } else if node.as_ref().borrow().r_child.is_empty() {
-                        let mut l_child = node.as_ref().borrow().l_child.clone();
+                        let mut l_child = node.as_ref().borrow().l_child.shallow_clone();
                         std::mem::swap(self, &mut l_child);
                         res_bst = l_child;
                     } else {
@@ -172,16 +179,31 @@ impl<K: Ord + Debug + Default, T: Debug + Default> BST<K, T> {
             }
         }
     }
-}
 
-impl<K: Ord + Debug + Default, T: Debug + Default> Clone for BST<K, T> {
-    fn clone(&self) -> Self {
-        match self {
-            Self::Empty => Self::Empty,
-            Self::Full(node) => Self::Full(node.clone()),
+    fn clone_impl(&self, cloned: &mut Self)
+    where
+        K: Clone,
+        T: Clone,
+    {
+        if let BST::Full(node) = self {
+            cloned.insert(
+                node.as_ref().borrow().key.clone(),
+                node.as_ref().borrow().value.clone(),
+            );
+            node.as_ref().borrow().l_child.clone_impl(cloned);
+            node.as_ref().borrow().r_child.clone_impl(cloned);
         }
     }
 }
+
+impl<K: Ord + Debug + Clone + Default, T: Debug + Clone + Default> Clone for BST<K, T> {
+    fn clone(&self) -> Self {
+        let mut cloned = Self::Empty;
+        self.clone_impl(&mut cloned);
+        cloned
+    }
+}
+
 #[test]
 fn test() {
     let mut bst = BST::<i32, String>::new();
